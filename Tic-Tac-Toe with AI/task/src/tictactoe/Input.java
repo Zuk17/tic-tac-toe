@@ -3,8 +3,7 @@ package tictactoe;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-import static tictactoe.Main.X;
-import static tictactoe.Main.Y;
+import static tictactoe.Field.X;
 
 public class Input {
 
@@ -15,16 +14,24 @@ public class Input {
     }
 
     public int[] readCoords() {
+        System.out.print("Enter the coordinates: ");
         return Stream.of(input.nextLine().split(" ")).
                 mapToInt(Integer::parseInt).toArray();
     }
 
     public String readInitString() {
+        System.out.print("Enter the cells: ");
         String inputStr = input.nextLine().toUpperCase();
 
-        if (inputStr.matches("[_|OX]*") && inputStr.length() == X * Y)
+        if (inputStr.matches("[_|OX]*") && inputStr.length() == X * X)
             return inputStr.replace('_', ' ');
 
         throw new RuntimeException("Incorrect input of start string");
     }
+
+    public String[] readStart() {
+        System.out.print("Input command: ");
+        return input.nextLine().toUpperCase().split(" ");
+    }
+
 }

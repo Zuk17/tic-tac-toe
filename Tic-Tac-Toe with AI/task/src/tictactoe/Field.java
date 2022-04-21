@@ -1,10 +1,12 @@
 package tictactoe;
 
+import java.util.ArrayList;
+
 public class Field {
     //Размеры поля
-    public final int X = 3;
+    public static final int X = 3;
     private int turn = 0;
-    Mark[][] field = new Mark[3][3];
+    Mark[][] field = new Mark[X][X];
 
     public Field(String inputString) {
         for (int i = 0; i < X; i++)
@@ -58,7 +60,19 @@ public class Field {
     public boolean setCoordinate(Coord coord, Mark mark) {
         if (field[coord.getX()][coord.getY()] == Mark.FOG) {
             field[coord.getX()][coord.getY()] = mark;
+
+            if (mark == Mark.FIRST) turn++;
+            else turn--;
+
             return true;
         } else return false;
+    }
+
+    public ArrayList<Coord> listCoord(Mark mark) {
+        ArrayList<Coord> listCoords = new ArrayList<>();
+        for (int i = 0; i < X; i++)
+            for (int j = 0; j < X; j++)
+                if (field[i][j] == Mark.FOG) listCoords.add(new Coord(new int[]{i + 1, j + 1}));
+        return listCoords;
     }
 }

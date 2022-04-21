@@ -1,6 +1,5 @@
 package tictactoe;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Player {
@@ -18,12 +17,15 @@ public class Player {
                 turnUser(input, field);
                 break;
             case EASY:
+                System.out.println("Making move level \"easy\"");
                 turnEasy(field);
                 break;
             case MEDIUM:
+                System.out.println("Making move level \"medium\"");
                 turnMedium(field);
                 break;
             case HARD:
+                System.out.println("Making move level \"hard\"");
                 turnHard(field);
                 break;
             default:
@@ -32,11 +34,22 @@ public class Player {
     }
 
     private void turnHard(Field field) {
-        System.out.println("Making move level \"hard\"");
     }
 
     private void turnMedium(Field field) {
-        System.out.println("Making move level \"medium\"");
+        if (field.listCoord.size() == 1 || field.listCoord.size() == Field.X * Field.X)
+            turnEasy(field);
+        else {
+            Coord tmpCoord = field.predicateTurn(oppositeMark());
+            if (tmpCoord != null)
+                field.setCoordinate(tmpCoord, playerMark);
+            else turnEasy(field);
+        }
+    }
+
+    private Mark oppositeMark() {
+        if (playerMark == Mark.FIRST) return Mark.SECOND;
+        else return Mark.FIRST;
     }
 
     private void turnUser(Input input, Field field) {
@@ -56,14 +69,11 @@ public class Player {
     }
 
     private void turnEasy(Field field) {
-        System.out.println("Making move level \"easy\"");
-
-        ArrayList<Coord> listCoords = field.listCoord(playerMark);
-        if (listCoords.size() == 1)
-            field.setCoordinate(listCoords.remove(0), playerMark);
+        if (field.listCoord.size() == 1)
+            field.setCoordinate(field.listCoord.get(0), playerMark);
         else {
             Random random = new Random();
-            Coord tmpCoord = listCoords.remove(random.nextInt(listCoords.size() - 1) + 1);
+            Coord tmpCoord = field.listCoord.get(random.nextInt(field.listCoord.size() - 1) + 1);
             field.setCoordinate(tmpCoord, playerMark);
         }
     }

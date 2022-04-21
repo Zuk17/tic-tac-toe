@@ -2,13 +2,15 @@ package tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Field {
     //Размеры поля
     public static final int X = 3;
+
     private int turn = 0;
-    Mark[][] field = new Mark[X][X];
-    List<Coord> listCoord = new ArrayList<>();
+    private final Mark[][] field = new Mark[X][X];
+    private final List<Coord> listCoord = new ArrayList<>();
 
     public Field(String inputString) {
         for (int i = 0; i < X; i++)
@@ -18,6 +20,10 @@ public class Field {
                 if (field[i][j] == Mark.SECOND) turn--;
                 if (field[i][j] == Mark.FOG) listCoord.add(new Coord(new int[]{i + 1, j + 1}));
             }
+    }
+
+    public int coordsGetSize() {
+        return listCoord.size();
     }
 
     public Mark getTurn() {
@@ -41,6 +47,23 @@ public class Field {
         return output.toString();
     }
 
+    public boolean setCoordinate(Coord coord, Mark mark) {
+        if (field[coord.getX()][coord.getY()] == Mark.FOG) {
+            field[coord.getX()][coord.getY()] = mark;
+
+            if (!listCoord.remove(coord))
+                throw new RuntimeException("В листе с доступными ходами отсутствует эта координата\n" +
+                        "X=" + coord.getX() + "\t\tY=" + coord.getY() + "\t\t Size of " + listCoord.size() + "\n" +
+                        listCoord);
+
+            if (mark == Mark.FIRST) turn++;
+            else turn--;
+
+            return true;
+        } else return false;
+    }
+
+    /* TODO: Вынести логику в другой класс*/
     public boolean isWin(Mark mark) {
         boolean resultVertical = true;
         boolean resultHorizontal = true;
@@ -60,23 +83,13 @@ public class Field {
         return resultDiagonal1 || resultDiagonal2 || resultHorizontal || resultVertical;
     }
 
-    public boolean setCoordinate(Coord coord, Mark mark) {
-        if (field[coord.getX()][coord.getY()] == Mark.FOG) {
-            field[coord.getX()][coord.getY()] = mark;
-
-            if (!listCoord.remove(coord))
-                throw new RuntimeException("В листе с доступными ходами отсутствует эта координата\n" +
-                        "X=" + coord.getX() + "\t\tY=" + coord.getY() + "\t\t Size of " + listCoord.size() + "\n" +
-                        listCoord);
-
-            if (mark == Mark.FIRST) turn++;
-            else turn--;
-
-            return true;
-        } else return false;
+    public Coord randomCoord () {
+        if (listCoord.size() == 1) return listCoord.get(0);
+        Random random = new Random();
+        return listCoord.get(random.nextInt(listCoord.size() - 1) + 1);
     }
 
-    public Coord predicateTurn(Mark mark) {
+    public Coord predicateTurn(Mark oppositeMark) {
         Coord coord;
         Coord coordVert;
         Coord coordDiag1 = null;
@@ -91,17 +104,17 @@ public class Field {
             int countVert = 0;
             coordVert = null;
 
-            if (field[i][i] == mark) countDiag1++;
+            if (field[i][i] == oppositeMark) countDiag1++;
             if (field[i][i] == Mark.FOG) coordDiag1 = new Coord(new int[]{i + 1, i + 1});
 
-            if (field[i][X - 1 - i] == mark) countDiag2++;
+            if (field[i][X - 1 - i] == oppositeMark) countDiag2++;
             if (field[i][X - 1 - i] == Mark.FOG) coordDiag2 = new Coord(new int[]{i + 1, X - i});
 
             for (int j = 0; j < X; j++) {
-                if (field[i][j] == mark) count++;
+                if (field[i][j] == oppositeMark) count++;
                 if (field[i][j] == Mark.FOG) coord = new Coord(new int[]{i + 1, j + 1});
 
-                if (field[j][i] == mark) countVert++;
+                if (field[j][i] == oppositeMark) countVert++;
                 if (field[j][i] == Mark.FOG) coordVert = new Coord(new int[]{j + 1, i + 1});
             }
 

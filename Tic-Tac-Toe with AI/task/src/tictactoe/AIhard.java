@@ -1,6 +1,6 @@
 package tictactoe;
 
-public class AIhard extends AI {
+public class AIhard extends AImedium {
 
     public AIhard(Mark playerMark) {
         super(playerMark);
@@ -13,6 +13,6 @@ public class AIhard extends AI {
         System.out.println("Making move level \"hard\"");
 
         if (field.coordsGetSize() == 1 || field.coordsGetSize() == Field.X * Field.X)
-            field.setCoordinate(field.randomCoord(), playerMark);
+            field.setCoordinate(randomCoord(field), playerMark);
     }
 }

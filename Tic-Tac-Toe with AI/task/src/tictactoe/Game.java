@@ -41,7 +41,7 @@ public class Game {
 
             System.out.println(field.printField());
 
-            if (field.isWin(turn)) {
+            if (players[i % 2].isWin(field)) {
                 System.out.println(turn.valueOf() + " wins");
                 break;
             } else if (i == Field.X * Field.X - 1)

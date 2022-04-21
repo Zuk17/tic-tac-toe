@@ -2,7 +2,6 @@ package tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Field {
     //Размеры поля
@@ -63,66 +62,11 @@ public class Field {
         } else return false;
     }
 
-    /* TODO: Вынести логику в другой класс*/
-    public boolean isWin(Mark mark) {
-        boolean resultVertical = true;
-        boolean resultHorizontal = true;
-        boolean resultDiagonal1 = true;
-        boolean resultDiagonal2 = true;
-        for (int i = 0; i < X; i++) {
-            resultVertical = true;
-            resultHorizontal = true;
-            if (field[i][i] != mark) resultDiagonal1 = false;
-            if (field[i][X - 1 - i] != mark) resultDiagonal2 = false;
-            for (int j = 0; j < X; j++) {
-                if (field[i][j] != mark) resultHorizontal = false;
-                if (field[j][i] != mark) resultVertical = false;
-            }
-            if (resultVertical || resultHorizontal) break;
-        }
-        return resultDiagonal1 || resultDiagonal2 || resultHorizontal || resultVertical;
+    public Mark get(int i, int j) {
+        return field[i][j];
     }
 
-    public Coord randomCoord () {
-        if (listCoord.size() == 1) return listCoord.get(0);
-        Random random = new Random();
-        return listCoord.get(random.nextInt(listCoord.size() - 1) + 1);
-    }
-
-    public Coord predicateTurn(Mark oppositeMark) {
-        Coord coord;
-        Coord coordVert;
-        Coord coordDiag1 = null;
-        Coord coordDiag2 = null;
-        int countDiag1 = 0;
-        int countDiag2 = 0;
-
-        for (int i = 0; i < X; i++) {
-            int count = 0;
-            coord = null;
-
-            int countVert = 0;
-            coordVert = null;
-
-            if (field[i][i] == oppositeMark) countDiag1++;
-            if (field[i][i] == Mark.FOG) coordDiag1 = new Coord(new int[]{i + 1, i + 1});
-
-            if (field[i][X - 1 - i] == oppositeMark) countDiag2++;
-            if (field[i][X - 1 - i] == Mark.FOG) coordDiag2 = new Coord(new int[]{i + 1, X - i});
-
-            for (int j = 0; j < X; j++) {
-                if (field[i][j] == oppositeMark) count++;
-                if (field[i][j] == Mark.FOG) coord = new Coord(new int[]{i + 1, j + 1});
-
-                if (field[j][i] == oppositeMark) countVert++;
-                if (field[j][i] == Mark.FOG) coordVert = new Coord(new int[]{j + 1, i + 1});
-            }
-
-            if (count == 2 && coord != null) return coord;
-            if (countVert == 2 && coordVert != null) return coordVert;
-            if (countDiag1 == 2 && coordDiag1 != null) return coordDiag1;
-            if (countDiag2 == 2 && coordDiag2 != null) return coordDiag2;
-        }
-        return null;
+    public List<Coord> getList() {
+        return listCoord;
     }
 }

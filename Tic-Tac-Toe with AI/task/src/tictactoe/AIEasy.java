@@ -3,6 +3,10 @@ package tictactoe;
 import java.util.List;
 import java.util.Random;
 
+/*
+Делает рандомные ходы
+ */
+
 public class AIEasy extends Player {
 
     public AIEasy(Mark playerMark) {

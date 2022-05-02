@@ -1,5 +1,10 @@
 package tictactoe;
 
+/*
+Не дает закончить последовательность третьим ходом,
+в остальных случаях делает рандомный ход
+ */
+
 public class AImedium extends AIEasy {
 
     public AImedium(Mark playerMark) {

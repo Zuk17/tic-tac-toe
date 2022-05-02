@@ -1,19 +1,18 @@
 package tictactoe;
 
 public class Player {
-    Mark playerMark;
+    final Mark playerMark;
 
     public Player(Mark playerMark) {
         this.playerMark = playerMark;
     }
 
     public void nextTurn(Field field) {
-        System.out.println("Something wrong with overriding method of nextTurn");
+        System.out.println("Something wrong with overriding nextTurn() method");
         assert false;
     }
 
-    public boolean isWin(Field fieldTrue) {
-        Field field = fieldTrue;
+    public boolean isWin(Field field, Mark playerMark) {
         boolean resultVertical = true;
         boolean resultHorizontal = true;
         boolean resultDiagonal1 = true;
